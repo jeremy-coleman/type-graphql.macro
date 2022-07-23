@@ -1,0 +1,38 @@
+import { GraphQLJSONObject as _GraphQLJSONObject } from "graphql-type-json";
+
+var _temp;
+
+import { Query, Field } from "type-graphql.macro/type-graphql";
+
+@ObjectType()
+class Test {
+  @Field(() => String)
+  requiredString: string;
+  @Field(() => String, {
+    nullable: true
+  })
+  nullableString: string | null;
+  @Field(() => String, {
+    nullable: true
+  })
+  optionalString: undefined | string;
+  @Field(() => String, {
+    nullable: true
+  })
+  advancedString: "abc" | null | "def";
+
+  @Query(() => _GraphQLJSONObject, {
+    nullable: true
+  })
+  map(): Promise<Record<string, string> | undefined> {
+    return undefined;
+  }
+
+  @Query(() => typeof (_temp = typeof NodeJS !== "undefined" && NodeJS?.Process) === "function" ? _temp : Object, {
+    nullable: true
+  })
+  async namespaced(): Promise<NodeJS.Process | undefined> {
+    return undefined;
+  }
+
+}

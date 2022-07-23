@@ -1,0 +1,74 @@
+import { __param as _param } from "tslib";
+
+var _temp;
+
+import { Query, Arg, Args, Ctx, Field, Mutation, ObjectType, Resolver, Int as _Int } from "type-graphql.macro/type-graphql";
+
+@Resolver({
+  isAbstract: true
+})
+abstract class AbstractResolver {}
+
+@ObjectType()
+class A extends Error {}
+/** Test class */
+
+
+@ObjectType({
+  description: "Test class"
+})
+class Test {
+  @Field(() => String)
+  string: string;
+  @Field(() => _Int)
+  int: Int;
+  /** I am a nullable boolean */
+
+  @Field(() => Boolean, {
+    nullable: true,
+    description: "I am a nullable boolean"
+  })
+  nullableBoolean?: boolean;
+  @Field(() => Number)
+  typeOverride: string;
+
+  @Query(() => String)
+  @_param(0, Arg("argParam", () => Number))
+  method(argParam: number): string {
+    return "something";
+  }
+
+  @Query(() => [typeof Recipe === "undefined" ? Object : Recipe])
+  @_param(0, Args())
+  recipes({
+    skip,
+    take
+  }: RecipesArgs): Promise<Recipe[]> {
+    return this.recipeService.findAll({
+      skip,
+      take
+    });
+  }
+
+  @Query(() => String)
+  stringQuery() {
+    return "simple string return";
+  }
+
+  @Mutation(() => typeof Recipe === "undefined" ? Object : Recipe)
+  @Authorized()
+  @_param(0, Arg("newRecipeData", () => typeof NewRecipeInput === "undefined" ? Object : NewRecipeInput))
+  @_param(1, Ctx("user", () => typeof User === "undefined" ? Object : User))
+  addRecipe(newRecipeData: NewRecipeInput, user: User): Promise<Recipe> {
+    return this.recipeService.addNew({
+      data: newRecipeData,
+      user
+    });
+  }
+
+  @Query(() => typeof (_temp = typeof NodeJS !== "undefined" && NodeJS?.Process) === "function" ? _temp : Object)
+  namespaced(): Promise<NodeJS.Process> {
+    return undefined;
+  }
+
+}

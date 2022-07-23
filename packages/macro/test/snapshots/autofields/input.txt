@@ -1,0 +1,22 @@
+import { AutoObjectType, AutoInputType, Field, Field as F2 } from "typegraphql.macro"
+
+@AutoObjectType()
+class File {
+  name: string;
+  ctime: Date;
+  mtime: Date;
+  @Field()
+  skipThis: boolean;
+  @F2()
+  alsoSkipThisWhenImportedAsAlias: number;
+}
+
+@AutoInputType()
+class Input {
+  name: string;
+  password: string;
+  @Field()
+  skipThis: boolean;
+  @F2()
+  alsoSkipThisWhenImportedAsAlias: number;
+}

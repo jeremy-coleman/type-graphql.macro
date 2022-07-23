@@ -1,0 +1,31 @@
+import { registerEnumType } from "type-graphql.macro/type-graphql";
+export const Element = registerEnumType({
+  Anemo: "Anemo",
+  Pyro: "Pyro",
+  Hydro: "Hydro",
+  Cryo: "Cryo",
+  Dendro: "Dendro",
+  Electro: "Electro",
+  Geo: "Geo"
+}, {
+  name: "Element"
+});
+export const ArrayType = registerEnumType({
+  "Apple": "Apple",
+  "Oranges": "Oranges"
+}, {
+  name: "ArrayType"
+});
+const Unexported = registerEnumType({
+  File: "File"
+}, {
+  name: "Unexported"
+});
+/** This should be a description field */
+
+export const Commented = registerEnumType({
+  Name: "Name"
+}, {
+  name: "Commented",
+  description: "This should be a description field"
+});

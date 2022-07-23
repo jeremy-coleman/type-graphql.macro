@@ -1,0 +1,15 @@
+import { __param as _param } from "tslib";
+import fs from "fs/promises";
+import { Query, Arg, FieldResolver, ObjectType, Resolver } from "type-graphql.macro/type-graphql";
+@Resolver(of => File)
+export class FileResolver {
+  @FieldResolver(() => String)
+  @_param(1, Arg("encoding", () => String, {
+    nullable: true
+  }))
+  async text(@Root()
+  file: string, encoding: "utf-8" = "utf-8"): Promise<string> {
+    return fs.readFile(file, encoding);
+  }
+
+}

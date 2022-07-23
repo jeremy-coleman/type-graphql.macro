@@ -1,0 +1,21 @@
+import { AutoObjectType, AutoInputType, ObjectType, InputType } from "typegraphql.macro"
+
+@AutoObjectType()
+class File {
+  name!: string;
+}
+
+@AutoInputType()
+class FileFilter {
+  name!: string;
+}
+
+@ObjectType()
+class ManualFile {
+  version!: number;
+}
+
+@InputType()
+class ManualFileFilter {
+  version!: number;
+}

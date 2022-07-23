@@ -1,0 +1,31 @@
+import { GraphQLJSONObject as _GraphQLJSONObject } from "graphql-type-json";
+import { __param as _param } from "tslib";
+
+var _temp;
+
+import { Arg, Query, Field } from "type-graphql.macro/type-graphql";
+
+@ObjectType()
+class Test {
+  @Field(() => _GraphQLJSONObject)
+  jsonField: Record<string, any>;
+  @Field(() => String)
+  unionType1: "abc" | "def";
+  @Field(() => Number)
+  unionType2: 1 | 2 | -1;
+  @Field(() => typeof (_temp = typeof A !== "undefined" && A?.B) === "function" ? _temp : Object)
+  aB: A.B;
+
+  @Query(() => String)
+  @_param(0, Arg("name", () => String, {
+    nullable: true
+  }))
+  type(name = "abc"): string {
+    return name;
+  }
+
+}
+
+namespace A {
+  class B {}
+}

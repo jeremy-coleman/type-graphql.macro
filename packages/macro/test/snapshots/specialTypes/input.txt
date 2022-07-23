@@ -1,0 +1,19 @@
+import { Arg, Query, Field } from "type-graphql.macro"
+
+@ObjectType()
+class Test {
+  @Field() jsonField: Record<string, any>;
+
+  @Field() unionType1: "abc" | "def";
+  @Field() unionType2: 1 | 2 | -1;
+  @Field() aB: A.B;
+
+  @Query()
+  type(@Arg() name = "abc"): string {
+    return name;
+  }
+}
+
+namespace A {
+  class B {}
+}

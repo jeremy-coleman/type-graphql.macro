@@ -1,0 +1,29 @@
+import { Field, Field as F2, InputType as _InputType, Field as _Field, ObjectType as _ObjectType } from "type-graphql.macro/type-graphql";
+
+@_ObjectType()
+class File {
+  @_Field(() => String)
+  name: string;
+  @_Field(() => Date)
+  ctime: Date;
+  @_Field(() => Date)
+  mtime: Date;
+  @Field()
+  @_Field(() => Boolean)
+  skipThis: boolean;
+  @F2(() => Number)
+  alsoSkipThisWhenImportedAsAlias: number;
+}
+
+@_InputType()
+class Input {
+  @_Field(() => String)
+  name: string;
+  @_Field(() => String)
+  password: string;
+  @Field()
+  @_Field(() => Boolean)
+  skipThis: boolean;
+  @F2(() => Number)
+  alsoSkipThisWhenImportedAsAlias: number;
+}

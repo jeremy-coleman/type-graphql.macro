@@ -1,0 +1,53 @@
+import { Query, Arg, Args, Ctx, Field, Mutation, ObjectType, Resolver } from "type-graphql.macro"
+
+@Resolver()
+abstract class AbstractResolver {}
+
+@ObjectType()
+class A extends Error {}
+
+/** Test class */
+@ObjectType()
+class Test {
+  @Field()
+  string: string
+
+  @Field()
+  int: Int
+
+  /** I am a nullable boolean */
+  @Field()
+  nullableBoolean?: boolean
+
+  @Field(() => Number)
+  typeOverride: string
+
+  @Query()
+  method(@Arg() argParam: number): string {
+    return "something"
+  }
+
+  @Query()
+  recipes(@Args() { skip, take }: RecipesArgs): Promise<Recipe[]> {
+    return this.recipeService.findAll({ skip, take });
+  }
+
+  @Query()
+  stringQuery() {
+    return "simple string return"
+  }
+
+  @Mutation()
+  @Authorized()
+  addRecipe(
+    @Arg() newRecipeData: NewRecipeInput,
+    @Ctx() user: User,
+  ): Promise<Recipe> {
+    return this.recipeService.addNew({ data: newRecipeData, user });
+  }
+
+  @Query()
+  namespaced(): Promise<NodeJS.Process> {
+    return undefined
+  }
+}

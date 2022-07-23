@@ -1,0 +1,20 @@
+import { Query, Field } from "type-graphql.macro/type-graphql";
+
+@ObjectType()
+class Recipe {
+  @Field(() => String)
+  title: string;
+  /**
+   * Returns the name of the recipe.
+   * @deprecated Use `title` instead
+   */
+
+  @Field(() => String, {
+    description: "Returns the name of the recipe.",
+    deprecationReason: "Use `title` instead"
+  })
+  get name(): string {
+    return this.title;
+  }
+
+}

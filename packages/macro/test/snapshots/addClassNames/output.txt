@@ -1,0 +1,27 @@
+import { ObjectType, InputType, InputType as _InputType, Field as _Field, ObjectType as _ObjectType } from "type-graphql.macro/type-graphql";
+
+@_ObjectType()
+class File {
+  static name = "File";
+  @_Field(() => String)
+  name!: string;
+}
+
+@_InputType()
+class FileFilter {
+  static name = "FileFilter";
+  @_Field(() => String)
+  name!: string;
+}
+
+@ObjectType()
+class ManualFile {
+  static name = "ManualFile";
+  version!: number;
+}
+
+@InputType()
+class ManualFileFilter {
+  static name = "ManualFileFilter";
+  version!: number;
+}

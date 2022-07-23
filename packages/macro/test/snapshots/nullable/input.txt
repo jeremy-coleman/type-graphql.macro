@@ -1,0 +1,19 @@
+import { Query, Field } from "type-graphql.macro"
+
+@ObjectType()
+class Test {
+  @Field() requiredString: string;
+  @Field() nullableString: string | null;
+  @Field() optionalString: undefined | string;
+  @Field() advancedString: "abc" | null | "def";
+
+  @Query()
+  map(): Promise<Record<string, string> | undefined> {
+    return undefined
+  }
+
+  @Query()
+  async namespaced(): Promise<NodeJS.Process | undefined> {
+    return undefined
+  }
+}

@@ -1,0 +1,18 @@
+import { AutoObjectType, AutoInputType, Ignore } from "typegraphql.macro"
+
+@AutoObjectType()
+class File {
+  name: string;
+  ctime: Date;
+  mtime: Date;
+  @Ignore()
+  skipThis: boolean;
+}
+
+@AutoInputType()
+class Input {
+  name: string;
+  password: string;
+  @Ignore()
+  skipThis: boolean;
+}

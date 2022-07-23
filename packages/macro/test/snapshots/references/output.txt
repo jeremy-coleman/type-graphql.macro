@@ -1,0 +1,31 @@
+import { ObjectType, Field } from "type-graphql.macro/type-graphql";
+import { UnknownImport } from "./unknown";
+
+@ObjectType()
+class A {}
+
+let Safe2;
+const Safe3 = String;
+export class Exported {}
+export default class ExportedDefaultClass {}
+export { UnrelatedExport } from "./alias";
+
+@ObjectType()
+class B {
+  @Field(() => A)
+  safeRef: A;
+  @Field(() => Safe2)
+  safeRef2: Safe2;
+  @Field(() => Safe3)
+  safeRef3: Safe3;
+  @Field(() => Exported)
+  safeRef4: Exported;
+  @Field(() => ExportedDefaultClass)
+  safeRef5: ExportedDefaultClass;
+  @Field(() => typeof UnknownIdentifier === "undefined" ? Object : UnknownIdentifier)
+  unsafeRef: UnknownIdentifier;
+  @Field(() => typeof UnknownImport === "undefined" ? Object : UnknownImport)
+  unsafeRef2: UnknownImport;
+  @Field(() => typeof UnrelatedExport === "undefined" ? Object : UnrelatedExport)
+  unsafeRef3: UnrelatedExport;
+}
