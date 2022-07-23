@@ -1,0 +1,66 @@
+{
+  "name": "type-graphql",
+  "version": "0.0.28",
+  "private": true,
+  "workspaces": [
+    "packages"
+  ],
+  "scripts": {
+    "build": "./build.mjs",
+    "test": "./packages/macro/test/bootstrap.js",
+    "test:update": "OVERWRITE=1 yarn test"
+  },
+  "upstream": {
+    "repository": "https://github.com/MichalLytek/type-graphql.git",
+    "commit": "4e669fede7e8b29dfffe4bb4cf0d507d73c37feb",
+    "branch": "master"
+  },
+  "dependencies": {
+    "@babel/helper-module-imports": "^7.18.6",
+    "babel-plugin-macros": "^3.1.0",
+    "class-validator": "^0.13.2",
+    "doctrine": "^3.0.0",
+    "graphql-query-complexity": "^0.11.0",
+    "graphql-subscriptions": "^2.0.0",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.9",
+    "@babel/plugin-proposal-decorators": "^7.18.9",
+    "@babel/plugin-transform-modules-commonjs": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/register": "^7.18.9",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-replace": "^4.0.0",
+    "@types/babel-plugin-macros": "^2.8.5",
+    "@types/babel__core": "^7.1.19",
+    "@types/doctrine": "^0.0.5",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^18.0.6",
+    "@types/prettier": "^2.6.3",
+    "@types/semver": "^7.3.10",
+    "cli-highlight": "^2.1.11",
+    "dedent": "^0.7.0",
+    "graphql": "^16.5.0",
+    "patch-package": "^6.4.7",
+    "prettier": "^2.7.1",
+    "rollup": "^2.77.0",
+    "rollup-plugin-ts": "^3.0.2",
+    "semver": "^7.3.7",
+    "typescript": "^4.7.4",
+    "@typescript-eslint/eslint-plugin": "5.30.7",
+    "@typescript-eslint/parser": "5.30.7",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-typescript": "3.3.0",
+    "eslint-plugin-import": "2.26.0",
+    "eslint": "8.20.0"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "tabWidth": 2,
+    "printWidth": 90,
+    "semi": false,
+    "singleQuote": false,
+    "trailingComma": "es5"
+  }
+}

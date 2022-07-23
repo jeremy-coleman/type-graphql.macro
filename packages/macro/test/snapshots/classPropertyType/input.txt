@@ -1,0 +1,17 @@
+import { classPropertyType } from "type-graphql.macro"
+
+class Test {
+  @Inject(classPropertyType)
+  string: string
+
+  @Field(classPropertyType)
+  int: Int
+
+  @Field(classPropertyType)
+  recipes: Recipe[]
+
+  @Field(classPropertyType)
+  owner: Person
+}
+
+class Person {}

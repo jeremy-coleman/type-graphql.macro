@@ -1,0 +1,7 @@
+import { buildSchema, ObjectType as _ObjectType, Field as _Field } from "type-graphql.macro/type-graphql";
+@_ObjectType()
+export class Automobile {
+  @_Field(() => String)
+  name: string;
+}
+export const schema = await buildSchema({});

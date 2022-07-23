@@ -1,0 +1,14 @@
+import { classPropertyType, Int as _Int } from "type-graphql.macro/type-graphql";
+
+class Test {
+  @Inject(() => String)
+  string: string;
+  @Field(() => _Int)
+  int: Int;
+  @Field(() => [typeof Recipe === "undefined" ? Object : Recipe])
+  recipes: Recipe[];
+  @Field(() => Person)
+  owner: Person;
+}
+
+class Person {}

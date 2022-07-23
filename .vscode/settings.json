@@ -1,0 +1,7 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.runtime": "node",
+  "typescript.inlayHints.parameterNames.enabled": "none",
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "cSpell.words": ["QLJSON"]
+}

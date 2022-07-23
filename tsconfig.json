@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "strict": true,
+    "resolveJsonModule": true,
+    "noEmit": true
+  }
+}

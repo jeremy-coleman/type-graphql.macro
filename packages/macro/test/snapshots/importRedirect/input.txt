@@ -1,0 +1,8 @@
+import { buildSchema, AutoObjectType } from "type-graphql.macro"
+
+@AutoObjectType()
+export class Automobile {
+  name: string;
+}
+
+export const schema = await buildSchema({});
