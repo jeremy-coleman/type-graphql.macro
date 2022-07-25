@@ -60,11 +60,14 @@ export function getReifier() {
    * Returns a reified type reference from a TypeScript type annotation node
    * and an optional associated JavaScript value expression, which is usually
    * a class property initializer.
+   * @param context Used for scope variables checking
+   * @param tscMode Emulate TypeScript `emitDecoratorMetadata` output
    */
   function getType(
     context: NodePath<any>,
     type: TSType,
-    value?: Expression | null
+    value?: Expression | null,
+    tscMode?: boolean
   ): DeductedType {
     if (!type && value != null) {
       return DeductedType(getTypeFromLiteral(value))
@@ -74,13 +77,19 @@ export function getReifier() {
 
     let nullable = false
     function getType(type: TSType): Expression {
-      const overrideResult = getTypeOverride(type)
-      if (overrideResult) {
-        return overrideResult
+      if (!tscMode) {
+        const overrideResult = getTypeOverride(type)
+        if (overrideResult) {
+          return overrideResult
+        }
       }
 
       switch (type.type) {
         case "TSUnionType": {
+          if (tscMode) {
+            return new Identifier("Object")
+          }
+
           let result: Expression | undefined
 
           for (const subtype of type.types) {
@@ -111,7 +120,9 @@ export function getReifier() {
         case "TSBooleanKeyword":
           return new Identifier("Boolean")
         case "TSArrayType":
-          return new ArrayExpression([getType(type.elementType)])
+          return tscMode
+            ? new Identifier("Array")
+            : new ArrayExpression([getType(type.elementType)])
         case "TSTypeReference": {
           const { typeName, typeParameters } = type
           if (typeName instanceof TSQualifiedName) {
@@ -128,13 +139,20 @@ export function getReifier() {
           }
 
           if (["Int", "Float", "int"].includes(typeName.name)) {
-            return modules.typeGraphQL.import(typeName.name)
+            return tscMode
+              ? new Identifier("Number")
+              : modules.typeGraphQL.import(typeName.name)
           }
           if (["Date"].includes(typeName.name)) {
             return new Identifier("Date")
           }
+          if (tscMode && typeName.name === "Promise") {
+            return new Identifier("Promise")
+          }
           if (typeName.name === "Record" && typeParameters?.params.length === 2) {
-            return modules.graphQLTypeJSON.import("GraphQLJSONObject")
+            return tscMode
+              ? new Identifier("Object")
+              : modules.graphQLTypeJSON.import("GraphQLJSONObject")
           }
 
           if (isSafeReferences(context, typeName.name)) {

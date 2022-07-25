@@ -11,7 +11,7 @@ export const cap_ = cap as <T, R extends T>(
 
 export const last = <T>(list: readonly T[]) => list[list.length - 1]
 
-export const ensureArray = <T>(value?: null | T[] | T): T[] =>
+export const ensureArray = <T>(value?: null | readonly T[] | T): T[] =>
   Array.isArray(value) ? value : value == null ? [] : [value]
 
 export function asserts(condition: any, message: string): asserts condition {

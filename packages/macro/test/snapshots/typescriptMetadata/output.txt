@@ -1,0 +1,30 @@
+import { __metadata as _metadata } from "tslib";
+import { emitDecoratorMetadata as t } from "type-graphql.macro/type-graphql";
+
+class Person {
+  @_metadata("design:type", String)
+  name: string;
+  @_metadata("design:type", Number)
+  age: number;
+  @_metadata("design:type", Boolean)
+  married: boolean;
+  @_metadata("design:type", Promise)
+  wedding: Promise<string>;
+  @_metadata("design:type", Array)
+  children: Person[];
+
+  @_metadata("design:type", Function)
+  @_metadata("design:paramtypes", [Date, Boolean])
+  @_metadata("design:returntype", Boolean)
+  requestAvailability(preferredDate: Date, weekend?: boolean): boolean {
+    return false;
+  }
+
+  @_metadata("design:type", Function)
+  @_metadata("design:paramtypes", [])
+  @_metadata("design:returntype", undefined)
+  shouldReturnVoid() {
+    return 0;
+  }
+
+}

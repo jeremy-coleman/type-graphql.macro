@@ -36,7 +36,7 @@ const equal = (name: string, config?: TypeGraphQLMacroConfig) => {
         "babel-plugin-macros",
         {
           isMacrosName: (name: string) => /\.macro$/.test(name),
-          resolvePath: (_path: string) => resolve(__dirname, "../src/index"),
+          resolvePath: () => resolve(__dirname, "../src/index"),
           typeGraphQL: {
             emitParameterDecorator: false,
             typeMap: { "Types.ObjectId": "String" },
@@ -101,4 +101,8 @@ test("redirects imports to the correct path", () => {
 
 test("works with classPropertyType", () => {
   equal("classPropertyType")
+})
+
+test("emulates TypeScript behavior with typescriptMetadata", () => {
+  equal("typescriptMetadata")
 })

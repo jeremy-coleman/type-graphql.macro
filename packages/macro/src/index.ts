@@ -52,6 +52,7 @@ const handler: MacroHandler = ({ references, config, babel }) => {
     AutoInputType = [],
     registerEnumType = [],
     classPropertyType = [],
+    emitDecoratorMetadata = [],
   } = references as {
     [key: string]: NodePath<t.Identifier>[]
   }
@@ -102,6 +103,7 @@ const handler: MacroHandler = ({ references, config, babel }) => {
     ObjectExpression,
     ObjectProperty,
     ReturnStatement,
+    StringLiteral,
     TSTypeReference,
     VariableDeclarator,
     valueToNode: valueToNode,
@@ -441,6 +443,75 @@ const handler: MacroHandler = ({ references, config, babel }) => {
         }
       }
       callExp.arguments.push(config)
+    }
+  })
+
+  emitDecoratorMetadata.forEach(path => {
+    const decorator = assertNodeType(path.parentPath, Decorator)
+    const target = assertNodeType(decorator.parent, [ClassMethod, ClassProperty])
+
+    if (target instanceof ClassProperty) {
+      const { type } = getType(
+        path,
+        (target.typeAnnotation as TSTypeAnnotation)?.typeAnnotation,
+        target.value,
+        true
+      )
+
+      path.replaceWith(
+        new CallExpression(modules.tslib.import("__metadata"), [
+          new StringLiteral("design:type"),
+          type ?? new Identifier("Object"),
+        ])
+      )
+    } else {
+      // target is ClassMethod
+      const args: Expression[] = []
+      for (const param of target.params) {
+        const toType = (typeAnnotation: TSTypeAnnotation, value: Expression) =>
+          getType(path, typeAnnotation?.typeAnnotation, value, true).type ??
+          new Identifier("Object")
+
+        if (param instanceof AssignmentPattern) {
+          args.push(toType(param.typeAnnotation as TSTypeAnnotation, param.right))
+        } else if (param instanceof Identifier) {
+          args.push(
+            toType(param.typeAnnotation as TSTypeAnnotation, (param as any).right)
+          )
+        } else {
+          args.push(new Identifier("Object"))
+        }
+      }
+
+      const returnType =
+        target.returnType &&
+        getType(
+          path,
+          (target.returnType as TSTypeAnnotation).typeAnnotation,
+          undefined,
+          true
+        ).type
+
+      path.parentPath.replaceWithMultiple([
+        new Decorator(
+          new CallExpression(modules.tslib.import("__metadata"), [
+            new StringLiteral("design:type"),
+            new Identifier("Function"),
+          ])
+        ),
+        new Decorator(
+          new CallExpression(modules.tslib.import("__metadata"), [
+            new StringLiteral("design:paramtypes"),
+            new ArrayExpression(args),
+          ])
+        ),
+        new Decorator(
+          new CallExpression(modules.tslib.import("__metadata"), [
+            new StringLiteral("design:returntype"),
+            returnType ?? new Identifier("undefined"),
+          ])
+        ),
+      ])
     }
   })
 

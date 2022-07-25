@@ -15,13 +15,13 @@ await fs.appendFile("dist/index.d.ts", javascript`
   declare function Arg(): ParameterDecorator;
 
   /** Same as \`ObjectType\` but all fields will be automatically declared a \`@Field()\` */
-  declare function AutoObjectType(): ClassDecorator;
+  export function AutoObjectType(): ClassDecorator;
 
   /** Same as \`InputType\` but all fields will be automatically declared a \`@Field()\` */
-  declare function AutoInputType(): ClassDecorator;
+  export function AutoInputType(): ClassDecorator;
 
   /** Causes the field to be omitted from \`Auto.*Type\` */
-  declare function Ignore(): PropertyDecorator;
+  export function Ignore(): PropertyDecorator;
 
   declare function registerEnumType<TEnum extends string>(enumObj: TEnum[]): TEnum[]
   declare function registerEnumType<TEnum extends object>(enumObj: TEnum): TEnum
@@ -34,7 +34,12 @@ await fs.appendFile("dist/index.d.ts", javascript`
    * prop: Class;
    * \`\`\`
    */
-  declare const classPropertyType: () => unknown;
+  export const classPropertyType: () => any;
+
+  /**
+   * Macro that will emulate tsc \`emitDecoratorMetadata\` for a class property.
+   */
+  export const emitDecoratorMetadata: PropertyDecorator;
 ` // `
 );
 

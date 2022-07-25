@@ -1,15 +1,30 @@
 import type { Node, NodePath } from "@babel/core"
 import type { ClassOrPredicate } from "./predicates"
 import { isType } from "./predicates"
-import { asserts } from "./utils"
+import { asserts, ensureArray } from "./utils"
 import { container, tokens } from "./di"
 
-export const assertNodeType = <T extends Node>(
-  node: Node,
-  assertion: ClassOrPredicate<T>
-): T => {
-  asserts(isType(assertion, node), `Expected ${assertion.name}, got ${node.type}`)
-  return node as T
+export const assertNodeType: {
+  <T extends Node, T1 extends Node>(
+    node: NodePath<Node> | null,
+    assertions: readonly [ClassOrPredicate<T>, ClassOrPredicate<T1>]
+  ): NodePath<T | T1>
+  <T extends Node>(
+    node: NodePath<Node> | null,
+    assertion: ClassOrPredicate<T>
+  ): NodePath<T>
+  <T extends Node, T1 extends Node>(
+    node: Node,
+    assertions: [ClassOrPredicate<T>, ClassOrPredicate<T1>]
+  ): T | T1
+  <T extends Node>(node: Node, assertion: ClassOrPredicate<T>): T
+} = (node: any, assertions: ClassOrPredicate<any> | readonly ClassOrPredicate<any>[]) => {
+  assertions = ensureArray(assertions)
+  asserts(
+    assertions.some(assertion => isType(assertion, node)),
+    `Expected ${assertions.map(r => r.name).join(" or ")}, got ${node.type}`
+  )
+  return node
 }
 
 export function getAsserts() {
@@ -45,24 +60,25 @@ export function getAsserts() {
     path: NodePath,
     expectDecoratedNode: (node: any) => node is T
   ) {
-    const parent = assertNodeType(path.parent, CallExpression)
-    if (path.parentPath!.parent instanceof ArrayExpression) {
+    const parentPath = assertNodeType(path.parentPath, CallExpression)
+    if (parentPath.parent instanceof ArrayExpression) {
       throw new Error(
         "Decorator cannot be used inside an ArrayExpression. Is this file already transpiled by another compiler?" +
           " Found: " +
           color.yellow +
-          printNode(path.parentPath!.parentPath!.parent) +
+          printNode(parentPath.parentPath!.parent) +
           color.reset +
           "\n\n"
       )
     }
 
-    assertNodeType(path.parentPath!.parent, Decorator)
-    assertNodeType(path.parentPath!.parentPath!.parent, expectDecoratedNode)
-    const targetPath = path.parentPath!.parentPath!.parentPath as NodePath<T>
+    const decoratorPath = assertNodeType(parentPath.parentPath, Decorator)
+    const targetPath = assertNodeType(decoratorPath.parentPath, expectDecoratedNode)
     return {
-      args: parent.arguments,
-      callExpression: parent,
+      args: parentPath.node.arguments,
+      callExpression: parentPath.node,
+      callExpressionPath: path.parentPath as NodePath<CallExpression>,
+      /** Alias for `targetPath.node` */
       target: targetPath.node,
       targetPath,
     }

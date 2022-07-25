@@ -1,0 +1,17 @@
+import { emitDecoratorMetadata as t } from "type-graphql.macro"
+
+class Person {
+  @t name: string
+  @t age: number
+  @t married: boolean
+  @t wedding: Promise<string>
+  @t children: Person[];
+
+  @t requestAvailability(preferredDate: Date, weekend?: boolean): boolean {
+    return false;
+  }
+
+  @t shouldReturnVoid() {
+    return 0;
+  }
+}
